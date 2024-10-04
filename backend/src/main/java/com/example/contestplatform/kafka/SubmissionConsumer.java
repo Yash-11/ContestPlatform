@@ -22,6 +22,7 @@ public class SubmissionConsumer {
         // Update Submission entity status in DB based on results
 
         // Submission submission = (Submission) submissionEvent; 
+        System.out.println("consumeSubmission");
         Submission submission = submissionEvent; 
         judgingWorker.compileAndRun(submission);
     }

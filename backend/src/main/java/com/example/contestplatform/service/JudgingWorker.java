@@ -10,8 +10,11 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.contestplatform.model.Contest;
 import com.example.contestplatform.model.Problem;
 import com.example.contestplatform.model.Submission;
+import com.example.contestplatform.model.Contestant;
+import com.example.contestplatform.model.Score;
 
 @Component
 public class JudgingWorker {
@@ -21,10 +24,29 @@ public class JudgingWorker {
     @Autowired
     SubmissionService submissionService;
 
+    @Autowired
+    ContestService contestService;
+
+    @Autowired
+    ContestantService contestantService;
+
+    @Autowired
+    ScoreService scoreService;
+
     public void compileAndRun(Submission submission) {
 
         Optional<Problem> optionalProblem = problemService.getProblemById(submission.getProblemId());
         Problem problem = optionalProblem.get();
+
+        Contestant contestant = contestantService.getById(submission.getUserId());
+
+        Long contestId = submission.getContestId();
+        Score score = null;
+        if (contestId != null) {
+            Optional<Contest> optionalContest = contestService.getContestById(contestId);
+            Contest contest = optionalContest.get();
+            score = scoreService.findOrCreateScore(contest, contestant);
+        }
 
         try {
             ProcessBuilder builder = new ProcessBuilder();
@@ -59,7 +81,8 @@ public class JudgingWorker {
             
             try {
                 FileWriter myWriter = new FileWriter(filePath);
-                myWriter.write(submission.getCode());
+                String code = submission.getCode();
+                myWriter.write(code);
                 myWriter.close();
                 System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
@@ -82,27 +105,32 @@ public class JudgingWorker {
             Process process = builder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            StringBuilder output = new StringBuilder();
+            StringBuilder outputBuilder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                output.append(line);
+                outputBuilder.append(line);
             }
+
+            String output = outputBuilder.toString();
+            String expectedOutput = problem.getOutputFormat();
             
             int exitCode = process.waitFor();
-            if (exitCode == 0) {
+            if (exitCode == 0 && output.equals(expectedOutput)) {
                 // Compare output with expected output
                 System.out.println("code run successful");
-                System.out.println(output.toString());
-
+                System.out.println(output);
                 submission.setStatus("SUCCESS");
+                if (score != null) {
+                    score.updateScore(submission);
+                }
             } else {
                 System.out.println("code run failed");
-                System.out.println(output.toString());
+                System.out.println(output);
 
                 submission.setStatus("FAILED");
             }
 
-            submission.setCodeOutput(output.toString());
+            submission.setCodeOutput(output);
 
         } catch (Exception e) {
             submission.setStatus("FAILED");

@@ -28,6 +28,9 @@ public class Contest {
     @OneToMany
     private List<Contestant> participants;
 
+    @OneToMany
+    private List<Score> scores;
+
     // Getters and Setters
 }
 

@@ -13,6 +13,7 @@ public class SubmissionProducer {
     private KafkaTemplate<String, Submission> kafkaTemplate;
 
     public void sendSubmission(Submission submissionEvent) {
+        System.out.println("sendSubmission");
         kafkaTemplate.send("submissions", submissionEvent);
     }
 }

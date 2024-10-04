@@ -40,6 +40,10 @@ public class ProblemService {
         return problemRepository.findById(id);
     }
 
+    public Optional<Problem> findOneByTitleIgnoreCase(String title) {        
+        return problemRepository.findOneByTitleIgnoreCase(title);
+    }
+
     // public Optional<Problem> getProblemById(Long id) {
     //     String cacheKey = CACHE_PREFIX + id;
         

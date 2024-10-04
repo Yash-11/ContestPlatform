@@ -21,7 +21,6 @@ import com.example.contestplatform.service.ContestService;
 
 @RestController
 @RequestMapping("/api/contests")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ContestController {
 
     @Autowired

@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("/leaderboard")
+@RequestMapping("api/leaderboard")
 public class LeaderboardController {
 
     @Autowired

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.contestplatform.model.Contest;
+import com.example.contestplatform.model.Problem;
 import com.example.contestplatform.repository.ContestRepository;
 
 @Service
@@ -29,6 +30,10 @@ public class ContestService {
     // Fetch a specific contest by ID
     public Optional<Contest> getContestById(Long id) {
         return contestRepository.findById(id);
+    }
+
+    public Optional<Contest> findOneByNameIgnoreCase(String title) {        
+        return contestRepository.findOneByNameIgnoreCase(title);
     }
 
     // Update contest details

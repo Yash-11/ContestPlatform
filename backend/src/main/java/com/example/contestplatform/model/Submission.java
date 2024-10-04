@@ -19,6 +19,7 @@ public class Submission implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
+    private Long contestId;
     private Long problemId;
     // @Column(columnDefinition = "TEXT")  // For MySQL, defines a large text column
     // @Lob  // Use Large Object type

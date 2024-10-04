@@ -18,7 +18,7 @@ import com.example.contestplatform.repository.ProblemRepository;
 import com.example.contestplatform.service.ProblemService;
 
 @RestController
-@RequestMapping("/problems")
+@RequestMapping("api/problems")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProblemController {
 
