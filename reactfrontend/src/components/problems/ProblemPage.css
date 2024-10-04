@@ -1,0 +1,13 @@
+.custom-hr {
+    border: 0;
+    height: 1px;
+    background: #adacac; /* Color of the line */
+    width: 100%;
+    /* margin: 50px 0; Space above and below the line */
+    margin: auto;
+  }
+
+.page-continer {
+    padding-left: 5%;
+    padding-right: 5%;
+}
