@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.contestplatform.dto.SubmissionDTO;
 import com.example.contestplatform.kafka.SubmissionProducer;
 import com.example.contestplatform.model.Submission;
 import com.example.contestplatform.repository.SubmissionRepository;
 import com.example.contestplatform.service.ContestantService;
 import com.example.contestplatform.service.CustomUserDetailsService;
 import com.example.contestplatform.service.JudgingService;
+import com.example.contestplatform.service.SubmissionService;
+
 import org.springframework.security.core.Authentication;
 
 @RestController
@@ -25,7 +28,7 @@ public class SubmissionController {
     @Autowired
     private SubmissionProducer submissionProducer;
     @Autowired
-    private SubmissionRepository submissionRepository;
+    private SubmissionService submissionService;
     @Autowired
     private JudgingService judgingService;
     @Autowired
@@ -40,21 +43,22 @@ public class SubmissionController {
         // Save initial submission state
         submission.setStatus("PENDING");
         submission.setUserId(userid);
-        submissionRepository.save(submission);
+        submissionService.save(submission);
         
         // Produce submission event to Kafka
         // String submissionEvent ="";//= serializeSubmissionToJSON(submission);  // Write method to serialize
         // submissionProducer.sendSubmission(submissionEvent);
 
         judgingService.submitCode(submission);
-
         return ResponseEntity.ok(submission);
     }
 
     @GetMapping("/result/{id}")
-    public ResponseEntity<Submission> getSubmissionResult(@PathVariable Long id) {
-        System.out.println(id);
-        Submission submission = submissionRepository.findById(id).orElse(null);
-        return ResponseEntity.ok(submission);
+    public ResponseEntity<SubmissionDTO> getSubmissionResult(@PathVariable Long id) {
+        Submission submission = submissionService.getReferenceById(id);
+        SubmissionDTO submissionDTO = new SubmissionDTO();
+        submissionDTO.setCodeOutput(submission.getCodeOutput());
+        submissionDTO.setStatus(submission.getStatus());
+        return ResponseEntity.ok(submissionDTO);
     }
 }

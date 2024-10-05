@@ -13,9 +13,13 @@ import org.springframework.stereotype.Component;
 import com.example.contestplatform.model.Contest;
 import com.example.contestplatform.model.Problem;
 import com.example.contestplatform.model.Submission;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.example.contestplatform.model.Contestant;
 import com.example.contestplatform.model.Score;
 
+@Slf4j
 @Component
 public class JudgingWorker {
     @Autowired
@@ -61,8 +65,8 @@ public class JudgingWorker {
             File codeDir = new File(filePath);
             File inputFile = new File(inputFilePath);
 
-            if (inputFile.createNewFile()) {
-                System.out.println("File created: " + inputFile.getName());
+            // if (inputFile.createNewFile()) {
+            //     System.out.println("File created: " + inputFile.getName());
 
                 try {
                     FileWriter myWriter = new FileWriter(inputFilePath);
@@ -74,9 +78,9 @@ public class JudgingWorker {
                     e.printStackTrace();
                 }
 
-            } else {
-            System.out.println("File already exists.");
-            }
+            // } else {
+            // System.out.println("File already exists.");
+            // }
 
             
             try {
@@ -115,26 +119,27 @@ public class JudgingWorker {
             String expectedOutput = problem.getOutputFormat();
             
             int exitCode = process.waitFor();
-            if (exitCode == 0 && output.equals(expectedOutput)) {
-                // Compare output with expected output
-                System.out.println("code run successful");
-                System.out.println(output);
+            if (exitCode != 0) {
+                log.info("Error executing the code");
+                submission.setStatus("ERROR");
+            } else if (output.equals(expectedOutput) == false) {
+                log.info("Wrong answer");
+                submission.setStatus("WRONG ANSWER");
+            } else {
+                log.info("Accepted");
                 submission.setStatus("SUCCESS");
                 if (score != null) {
                     score.updateScore(submission);
                 }
-            } else {
-                System.out.println("code run failed");
-                System.out.println(output);
-
-                submission.setStatus("FAILED");
             }
 
+            log.info(output);
             submission.setCodeOutput(output);
 
         } catch (Exception e) {
-            submission.setStatus("FAILED");
-            submission.setCodeOutput("");
+
+            log.info("Error executing the code");
+            submission.setStatus("ERROR");
         }
 
         submissionService.save(submission);

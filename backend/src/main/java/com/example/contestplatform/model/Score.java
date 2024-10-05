@@ -3,6 +3,7 @@ package com.example.contestplatform.model;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ public class Score {
     @ManyToOne
     private Contestant contestant;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Submission> submissions;
 
     private int rank;      // Contestant's rank in the contest

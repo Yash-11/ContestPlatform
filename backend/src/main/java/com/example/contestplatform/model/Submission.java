@@ -28,12 +28,12 @@ public class Submission implements Serializable {
     // @Column(columnDefinition = "TEXT")  // Explicitly define as TEXT in H2
     // @Lob  // Defines this as a large object (Clob/Text)
     // @Column(columnDefinition = "CLOB")  // Use CLOB for large strings in H2
-    @Lob @Basic(fetch=FetchType.LAZY)
-    @Column(name = "CODE", nullable=false, length=1024)
+    // @Lob @Basic(fetch=FetchType.LAZY)
+    @Column(name = "CODE", length=1024)
     protected String code;
     private String language; // Python, C++, Java, etc.
     private String status; // SUCCESS, FAILURE, TIMEOUT, etc.
-    @Lob @Basic(fetch=FetchType.LAZY)
+    // @Lob @Basic(fetch=FetchType.LAZY)
     @Column(name = "CODEOUTPUT", length=1024)
     private String codeOutput;
 }
