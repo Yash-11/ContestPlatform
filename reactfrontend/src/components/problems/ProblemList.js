@@ -47,21 +47,13 @@ const ProblemList = () => {
             </div>
             {problems.map(problem => (
               <div key={problem.id}>
-                <div className="problem-elem shadow-sm">
+                <div className="problem-elem shadow-sm" style={{ backgroundColor: problem.id % 2 === 0 ? '#f0f0f0' : '#ffffff' }}>
                   <div className=" d-flex  align-items-center">
                     <div style={{ flexBasis: '10%' }} className=""><h5 className="">{problem.id}.</h5></div>
                     <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a href={`/problem/${problem.id}`} className="">
                       {problem.title}
                     </a></h5></div>
                     <div style={{ flexBasis: '30%' }} className=""><h5 className="">Easy</h5></div>
-
-                    {/* <h5>problem.id</h5>
-                    <h5>blasd bldfkslv afdsl</h5> */}
-                    {/* <h5 className="card-title text-primary">{problem.title}</h5> */}
-                    {/* <h5>Hard</h5> */}
-                    {/* <a href={`/problem/${problem.id}`} className="btn btn-outline-primary btn-sm mt-3">
-                      View Problem
-                    </a> */}
                   </div>
                 </div>
               </div>

@@ -44,9 +44,30 @@ const ContestList = () => {
         <div>
           <ul>
             {contests.map(contest => (
-              <div className="problem-elem shadow-sm">
-                <a href={`/contest/${contest.id}`}>{contest.name}</a>
-                <p>{contest.startTime}</p>
+              <div className="contest-elem shadow-sm">
+                <div className='d-flex align-items-center'>
+
+                  <div style={{ flexBasis: '15%' }}>
+                    <img 
+                    className='contest-img'
+                      src={require('../../assets/contestimg.png')}
+                      alt="contestimg"
+                      style={{ height: '50px' }}
+                    />
+                  </div>
+                  <div style={{ flexBasis: '70%' }}>
+                    <div>{contest.name}</div>
+                    <div>{contest.startTime}</div>
+                    {/* <a href={`/contest/${contest.id}`}>{contest.name}</a>
+                    <p>{contest.startTime}</p> */}
+                  </div>
+                  <div >
+                    <div className='enter-btn'>
+                      <Link className="" to={`/contest/${contest.id}`}>Enter</Link>
+                      {/* <a href={`/contest/${contest.id}`}>Enter</a> */} 
+                    </div>
+                  </div>
+                </div>
               </div>
               // <li key={contest.id}>
               // </li>

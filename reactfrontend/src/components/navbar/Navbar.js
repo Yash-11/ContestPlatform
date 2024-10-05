@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = ({ handleLogout }) => {
   var user;
@@ -40,9 +41,10 @@ const Navbar = ({ handleLogout }) => {
             </>
           ) : (
             <li className="nav-item">
-              <button className="btn btn-link nav-link" onClick={handleLogout}>
+              {/* <button className="logout-btn nav-link" onClick={handleLogout}>
                 Logout
-              </button>
+              </button> */}
+              <button type="button" className="logout-btn" onClick={handleLogout}>Logout</button>
             </li>
           )}
         </ul>

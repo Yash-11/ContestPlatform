@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import useLogout from '../hooks/useLogout';
 import Navbar from '../navbar/Navbar';
+import './ContestPage.css'
 
 function ContestPage() {
     const { contestId } = useParams();
@@ -30,15 +31,16 @@ function ContestPage() {
         <div>
             <Navbar handleLogout={handleLogout} />
             <div className="page-continer">
-                <h1 className="mt-2">{contest.name}</h1>
+                <div className='title mb-3'>{contest.name}</div>
+                {/* <h1 className="mt-2">{contest.name}</h1> */}
                 <hr className="custom-hr mt-3 mb-4"></hr>
-                <p>{contest.description}</p>
-                <hr className="custom-hr mt-3 mb-4"></hr>
+                {/* <p>{contest.description}</p>
+                <hr className="custom-hr mt-3 mb-4"></hr> */}
             <div>
                 <ul>
                     {problems.map(problem => (
                         <div key={problem.id}>
-                        <div className="problem-elem shadow-sm">
+                        <div className="problem-elem shadow-sm" style={{ backgroundColor: problem.id % 2 === 0 ? '#f0f0f0' : '#ffffff' }}>
                           <div className=" d-flex  align-items-center">
                             <div style={{ flexBasis: '10%' }} className=""><h5 className="">{problem.id}.</h5></div>
                             <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a href={`/contest/${contestId}/problem/${problem.id}`} className="">
