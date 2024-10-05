@@ -90,40 +90,58 @@ function ProblemPage() {
       <Navbar handleLogout={handleLogout} />
 
       <div className="page-continer">
-        <h1>{problem.title}</h1>
-        <hr className="custom-hr mt-3 mb-4"></hr>
-        <h4>Description</h4>
-        <p>{problem.description}</p>
-        <hr className="custom-hr mt-3 mb-4"></hr>
+        <div className='title mb-3'>{problem.id}. {problem.title}</div>
+        {/* <div className='desc'>Description</div> */}
 
-        <CodeMirror value={value} height="200px" extensions={[javascript({ jsx: true })]} onChange={onChange} />
-        {/* <button onClick={handleSubmit} style={{ marginTop: '10px' }}>
-          Submit
-        </button> */}
-        <div className="container" style={{ width: 200 }} >
-          {/* <div class="container" style="width: 300px;"> */}
-          <button type="button" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+        <p>{problem.description}</p>
+        {/* <hr className="custom-hr mt-3 mb-4"></hr> */}
+
+        <div className='editor'>
+
+          <CodeMirror value={value} height="200px" extensions={[javascript({ jsx: true })]} onChange={onChange} />
+          <div className="container mt-2" style={{ width: 200 }} >
+            <button type="button" className="  submit-btn" onClick={handleSubmit}>Submit</button>
+          </div>
         </div>
 
-        <h4>Input</h4>
+        <div>
 
-        <p>{problem.inputFormat}</p>
-        <h4>Output</h4>
-        <p>{problem.outputFormat}</p>
-        <p>{problem.constraints}</p>
+          <div className='input-heading'>Input</div>
+          <div className="input-box">
+            <div className='mx-3'>
+              {problem.inputFormat}
+            </div>
+          </div>
+        </div>
+
+        <div className='mt-2'>
+          <div className='input-heading'>Expected Output</div>
+          <div className="input-box">
+            <div className='mx-3'>
+              {problem.outputFormat}
+            </div>
+          </div>
+        </div>
 
         {/* Show Run Status */}
-        <div style={{ marginTop: '20px' }}>
-          <h4>Status: {runStatus}</h4>
+        <div className='mt-2'>
+          <h4 style={{ color: runStatus === 'SUCCESS' ? 'green' : runStatus === 'FAILED' ? 'red' : 'red' }}>
+            Status: {runStatus}
+          </h4>
         </div>
 
         {/* Show Output */}
-        {output && (
-          <div style={{ marginTop: '20px' }}>
-            <h3>Output:</h3>
-            <pre>{output}</pre>
+        <div className='mt-2 mb-3'>
+            <div className='input-heading'>Output</div>
+            <div className="input-box">
+              <div className='mx-3'>
+                {output}
+              </div>
+            </div>
           </div>
-        )}
+        {/* {output && (
+          
+        )} */}
 
       </div>
 

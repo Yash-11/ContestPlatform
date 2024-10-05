@@ -11,3 +11,48 @@
     padding-left: 5%;
     padding-right: 5%;
 }
+
+.input-box {
+  background-color: #000a2008;
+  border-radius: .5rem;
+  padding-bottom: .75rem;
+  padding-top: .75rem;
+}
+
+.input-heading {
+  color: #3c3c4399;
+  font-size: larger;
+}
+
+.title {
+  color: rgba(0, 0, 0, 0.826);
+  font-size: xx-large;
+}
+
+.desc {
+  font-size: x-large;
+}
+
+.submit-btn{
+  width: 80%;
+  padding: 0.5rem;
+  border-radius: .5rem;
+  color: #2fbb21;
+  background-color: #6d767642;
+  font-size: large;
+  border: none;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+
+.submit-btn:hover {
+  background-color:#8d9098;
+  color: #55ea48;
+  transition: 0.4s;
+}
+
+.editor{
+  background-color: #71737608;
+  padding: 1rem;
+  border-radius: 1rem;
+}
