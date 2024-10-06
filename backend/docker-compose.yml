@@ -5,6 +5,12 @@ services:
     container_name: contestplatform
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: broker:9092
+      AllowedOrigin: https://venerable-pavlova-d4a4c0.netlify.app/
+      DOCKER_HOST: unix:///var/run/docker.sock  # Set the Docker host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Mount the Docker socket
+      - /tmp:/tmp
+    privileged: true
     ports:
       - "8080:8080"
     depends_on:

@@ -53,45 +53,36 @@ public class JudgingWorker {
         }
 
         try {
-            ProcessBuilder builder = new ProcessBuilder();
-
-            String filePath = "/tmp/Main" + submission.getId() + ".java";
+            
+            Long submissionId = submission.getId();
+            String filePath = "/tmp/Main" + submissionId + ".java";
             String folderPath = "/tmp";
-            String fileName = "Main" + submission.getId() + ".java";
-            String className = "Main" + submission.getId();
+            String fileName = "Main" + submissionId + ".java";
+            String className = "Main" + submissionId;
+            String inputFilePath = "/tmp/input_" + submissionId + ".txt";
 
-            String inputFilePath = "/tmp/input.txt";
-
-            File codeDir = new File(filePath);
+            log.info("Starting code execution for submission ID: {}", submissionId);
+            
+            File codeFile = new File(filePath);
             File inputFile = new File(inputFilePath);
 
-            // if (inputFile.createNewFile()) {
-            //     System.out.println("File created: " + inputFile.getName());
 
-                try {
-                    FileWriter myWriter = new FileWriter(inputFilePath);
-                    myWriter.write(problem.getInputFormat());
-                    myWriter.close();
-                    System.out.println("Successfully wrote to the file.");
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                    e.printStackTrace();
-                }
-
-            // } else {
-            // System.out.println("File already exists.");
-            // }
-
-            
-            try {
-                FileWriter myWriter = new FileWriter(filePath);
-                String code = submission.getCode();
-                myWriter.write(code);
-                myWriter.close();
-                System.out.println("Successfully wrote to the file.");
+            try (FileWriter inputWriter = new FileWriter(inputFilePath)) {
+                inputWriter.write(problem.getInputFormat());
+                log.info("Successfully wrote input to file: {}", inputFilePath);
             } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
+                log.error("Error writing input to file: {}", inputFilePath, e);
+                submission.setStatus("ERROR");
+                return;
+            }
+
+            try (FileWriter codeWriter = new FileWriter(filePath)) {
+                codeWriter.write(submission.getCode());
+                log.info("Successfully wrote code to file: {}", filePath);
+            } catch (IOException e) {
+                log.error("Error writing code to file: {}", filePath, e);
+                submission.setStatus("ERROR");
+                return;
             }
 
 
@@ -99,8 +90,9 @@ public class JudgingWorker {
 
             // docker run --rm -v /tmp:code openjdk bash -c javac /code/Main.java && java -cp /code Main 
 
-            builder.command("docker", "run", "--rm", "-v", folderPath+":/code", "openjdk", 
-                "bash", "-c", "javac /code/"+fileName+" && java -cp /code Main < /code/input.txt");
+            ProcessBuilder builder = new ProcessBuilder();
+            builder.command("/usr/bin/docker", "run", "--rm", "-v", folderPath+":/code", "openjdk", 
+                "bash", "-c", "javac /code/"+fileName+" && java -cp /code Main"+ " < /code/input_" + submissionId + ".txt");
 
             // builder.command("docker", "run", "--rm", "-v", "/path/to/your/code:/code", "openjdk", 
             //     "bash", "-c", "javac /code/Main.java && java -cp /code Main < /code/input.txt");
@@ -120,7 +112,7 @@ public class JudgingWorker {
             
             int exitCode = process.waitFor();
             if (exitCode != 0) {
-                log.info("Error executing the code");
+                log.error("Error executing exitCode: "+exitCode);
                 submission.setStatus("ERROR");
             } else if (output.equals(expectedOutput) == false) {
                 log.info("Wrong answer");
@@ -133,12 +125,25 @@ public class JudgingWorker {
                 }
             }
 
-            log.info(output);
+            log.debug("Code output for submission ID {}: {}", submissionId, output);
             submission.setCodeOutput(output);
+
+            if (codeFile.delete()) {
+                log.info("Deleted code file: {}", filePath);
+            } else {
+                log.error("Failed to delete code file: {}", filePath);
+            }
+
+            if (inputFile.delete()) {
+                log.info("Deleted input file: {}", inputFilePath);
+            } else {
+                log.error("Failed to delete input file: {}", inputFilePath);
+            }
+        
 
         } catch (Exception e) {
 
-            log.info("Error executing the code");
+            log.error("Unexpected error occurred during execution for submission ID: {}", submission.getId(), e);
             submission.setStatus("ERROR");
         }
 
