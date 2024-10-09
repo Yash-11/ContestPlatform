@@ -59,8 +59,9 @@ body {
     border-color: #0056b3;
   }
   
-  .h2heading {
+  .contest-heading {
     color: rgb(78, 138, 78);
+    font-size: x-large;
   }
 
   .profile_pic {
@@ -71,7 +72,7 @@ body {
     border: 0;
     height: 1px;
     background: #adacac; /* Color of the line */
-    width: 80%;
+    width: 90%;
     /* margin: 50px 0; Space above and below the line */
     margin: auto;
   }

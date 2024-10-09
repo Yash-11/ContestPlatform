@@ -7,26 +7,43 @@ import Navbar from '../navbar/Navbar';
 
 const ContestList = () => {
   const navigate = useNavigate();
-  const [contests, setContests] = useState([]);
-  
+  // const [contests, setContests] = useState([]);
+  const [currentContests, setCurrentContests] = useState([]);
+  const [pastContests, setPastContests] = useState([]);
+
+
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    const headers = {
+      "Authorization": `Bearer ${token}`
+    };
+
+    // Fetch past contests
     axios
-    .get(`${process.env.REACT_APP_API_BASE_URL}/api/contests`,
-      {
-        headers: {
-          "Authorization": 'Bearer ' + localStorage.getItem('token')
-        }
+      .get(`${process.env.REACT_APP_API_BASE_URL}/api/contests/past`, { headers })
+      .then(response => {
+        setPastContests(response.data);
       })
-    .then(response => {
-      console.log(response.data);      
-      setContests(response.data);
-    })
-    .catch(error => {
-      navigate('/login');
-      console.error('Error fetching doctors:', error);
-    });
-  }, []);
+      .catch(error => {
+        console.error('Error fetching past contests:', error);
+        navigate('/login');
+      });
+
+    // Fetch current contests
+    axios
+      .get(`${process.env.REACT_APP_API_BASE_URL}/api/contests/current`, { headers })
+      .then(response => {
+        setCurrentContests(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching current contests:', error);
+        navigate('/login');
+      });
+  }, [navigate]);
+
+
+
 
 
   const handleLogout = useLogout();
@@ -37,19 +54,19 @@ const ContestList = () => {
       <Navbar handleLogout={handleLogout} />
 
       <div className="container mt-3">
-        <h1 className="text-center mb-3 h2heading">Contests</h1>
+        <div className="mb-3 contest-heading mx-5">Contests</div>
         <hr className="custom-hr mt-3 mb-4"></hr>
 
 
         <div>
           <ul>
-            {contests.map(contest => (
+            {currentContests.map(contest => (
               <div className="contest-elem shadow-sm">
                 <div className='d-flex align-items-center'>
 
                   <div style={{ flexBasis: '15%' }}>
-                    <img 
-                    className='contest-img'
+                    <img
+                      className='contest-img'
                       src={require('../../assets/contestimg.png')}
                       alt="contestimg"
                       style={{ height: '50px' }}
@@ -58,19 +75,47 @@ const ContestList = () => {
                   <div style={{ flexBasis: '70%' }}>
                     <div>{contest.name}</div>
                     <div>{contest.startTime}</div>
-                    {/* <a href={`/contest/${contest.id}`}>{contest.name}</a>
-                    <p>{contest.startTime}</p> */}
                   </div>
                   <div >
                     <div className='enter-btn'>
                       <Link className="" to={`/contest/${contest.id}`}>Enter</Link>
-                      {/* <a href={`/contest/${contest.id}`}>Enter</a> */} 
                     </div>
                   </div>
                 </div>
               </div>
               // <li key={contest.id}>
               // </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mb-3 contest-heading mx-5">Past Contests</div>
+        <hr className="custom-hr mt-3 mb-4"></hr>
+        <div>
+          <ul>
+            {pastContests.map(contest => (
+              <div key={contest.id} className="contest-elem shadow-sm mb-2">
+                <div className="d-flex align-items-center">
+                  <div style={{ flexBasis: '15%' }}>
+                    <img
+                      className="contest-img"
+                      src={require('../../assets/contestimg.png')}
+                      alt="contestimg"
+                      style={{ height: '50px' }}
+                    />
+                  </div>
+                  <div style={{ flexBasis: '70%' }}>
+                    <div>{contest.name}</div>
+                    <div>{contest.startTime}</div>
+                  </div>
+
+                  <div >
+                    <div className='enter-btn'>
+                      <Link className="" to={`/contest/${contest.id}`}>Enter</Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ))}
           </ul>
         </div>

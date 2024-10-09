@@ -15,11 +15,7 @@ const headers = {
 
 function ProblemPage() {
   const { problemId } = useParams();
-  const [value, setValue] = React.useState("class Main {\
-    public static void main(String[] args) {\
-        System.out.println(\"Hello World\");\
-    }\
-}");
+  const [value, setValue] = React.useState("class Main {\n    public static void main(String[] args) {\n      System.out.println(\"Hello World\");\n  }\n}");
   const [problem, setProblem] = useState({});
   const [runStatus, setRunStatus] = useState(''); // State to track run status
   const [output, setOutput] = useState(''); // State to track output
@@ -50,6 +46,7 @@ function ProblemPage() {
       }, headers);
 
       const submissionId = response.data.id;
+      setRunStatus('PENDING...');
 
       const interval = setInterval(async () => {
         try {
@@ -59,7 +56,7 @@ function ProblemPage() {
             }
           });
           if (response.data.status === 'PENDING') {
-            setRunStatus('Processing...');
+            setRunStatus('PENDING...');
             console.log('Still processing...');
           } else {
             setRunStatus(response.data.status); // Set status to completed
@@ -125,7 +122,7 @@ function ProblemPage() {
 
         {/* Show Run Status */}
         <div className='mt-2'>
-          <h4 style={{ color: runStatus === 'SUCCESS' ? 'green' : runStatus === 'FAILED' ? 'red' : 'red' }}>
+          <h4 style={{ color: runStatus === 'SUCCESS' ? 'green' : runStatus === 'FAILED' ? 'red' : 'orange' }}>
             Status: {runStatus}
           </h4>
         </div>
