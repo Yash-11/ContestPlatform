@@ -1,5 +1,6 @@
 package com.example.contestplatform.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +17,46 @@ public class ContestService {
     @Autowired
     private ContestRepository contestRepository;
 
+    @Autowired
+    private ProblemService problemService;
+
     // Create a new contest
     public Contest createContest(Contest contest) {
-        System.out.println("Create contest: name: "+contest.getName());
-        return contestRepository.save(contest);
+        Contest savedContest = contestRepository.save(contest);
+        Long contestNo = savedContest.getId()+100;
+        savedContest.setName(savedContest.getName()+contestNo);
+        System.out.println("Create contest: name: "+savedContest.getName());
+        return contestRepository.save(savedContest);
     }
+
+    public List<Contest> getPastContests() {
+        List<Contest> currentContests = contestRepository.findByEndTimeBefore(LocalDateTime.now());
+        if (currentContests.isEmpty()) {
+            List<Problem> problems = problemService.getProblems();
+            Contest contest = new Contest();
+            contest.setName("Div2 ");
+            contest.setProblems(problems.subList(0, Math.min(3, problems.size())));
+            contest.setStartTime(LocalDateTime.now().minusDays(2));
+            contest.setEndTime(LocalDateTime.now().minusDays(1));
+            createContest(contest);
+        }
+        return contestRepository.findByEndTimeBefore(LocalDateTime.now());
+    }
+
+    public List<Contest> getCurrentContests() {
+        List<Contest> currentContests = contestRepository.findByEndTimeAfter(LocalDateTime.now());
+        if (currentContests.isEmpty()) {
+            List<Problem> problems = problemService.getProblems();
+            Contest contest = new Contest();
+            contest.setName("Div2 ");
+            contest.setProblems(problems.subList(0, Math.min(3, problems.size())));
+            contest.setStartTime(LocalDateTime.now());
+            contest.setEndTime(LocalDateTime.now().plusDays(1));
+            createContest(contest);
+        }
+        return contestRepository.findByEndTimeAfter(LocalDateTime.now());
+    }
+
 
     // Get a list of all contests
     public List<Contest> getAllContests() {

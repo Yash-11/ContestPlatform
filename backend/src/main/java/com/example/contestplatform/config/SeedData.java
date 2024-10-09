@@ -65,9 +65,9 @@ public class SeedData implements CommandLineRunner {
         if (!optionalContest.isPresent()) {
             List<Problem> problems = problemService.getProblems();
             Contest contest = new Contest();
-            contest.setDescription("Div2 159");
-            contest.setName("Div2 159");
-            contest.setProblems(problems);
+            contest.setDescription("Div2 159");            
+            contest.setName("Div2 ");
+            contest.setProblems(problems.subList(0, Math.min(3, problems.size())));
             contest.setStartTime(LocalDateTime.now());
             contest.setEndTime(LocalDateTime.now().plusDays(1));
             return contestService.createContest(contest);
@@ -104,7 +104,7 @@ public class SeedData implements CommandLineRunner {
         // List<Problem> problems = new ArrayList<>();
         // problems.add(problem);
         
-        createContestIfNotExists("Div2 159", "Div2 159");
+        // createContestIfNotExists("Div2 159", "Div2 159");
 
         
     }

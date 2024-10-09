@@ -40,6 +40,17 @@ public class ContestController {
         return ResponseEntity.ok(contests);
     }
 
+    @GetMapping("/current")
+    public List<Contest> getCurrentContests() {
+        return contestService.getCurrentContests();
+    }
+
+    // Endpoint for past contests
+    @GetMapping("/past")
+    public List<Contest> getPastContests() {
+        return contestService.getPastContests();
+    }
+
     // Get a contest by ID
     @GetMapping("/{id}")
     public ResponseEntity<Contest> getContestById(@PathVariable Long id) {
