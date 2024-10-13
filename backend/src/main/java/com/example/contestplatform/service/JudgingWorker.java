@@ -122,6 +122,7 @@ public class JudgingWorker {
                 submission.setStatus("SUCCESS");
                 if (score != null) {
                     score.updateScore(submission);
+                    scoreService.save(score);
                 }
             }
 

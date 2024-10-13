@@ -1,10 +1,12 @@
 package com.example.contestplatform.service;
 
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.contestplatform.dto.ScoreDTO;
 import com.example.contestplatform.model.Contest;
 import com.example.contestplatform.model.Contestant;
 import com.example.contestplatform.model.Problem;
@@ -43,5 +45,12 @@ public class ScoreService {
         }
 
         return score;
+    }
+
+    public List<ScoreDTO> getRankingsForContest(Contest contest) {
+        List<Score> scores = scoreRepository.findAllByContestOrderByRankAsc(contest);
+        return scores.stream().map((s)-> {
+            return new ScoreDTO(s.getId(), s.getContestant().getUsername(), s.getSubmissions().size(), s.getRank(), s.getScore());
+        }).collect(Collectors.toList());
     }
 }

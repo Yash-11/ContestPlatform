@@ -42,6 +42,8 @@ public class LeaderboardController {
     //     return ResponseEntity.ok(leaderboardService.getTopUsers(topN));
     // }
 
+    
+
     /**
      * Get a user's rank.
      * @param userId User ID.

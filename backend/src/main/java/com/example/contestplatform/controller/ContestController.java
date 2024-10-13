@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.contestplatform.dto.ScoreDTO;
 import com.example.contestplatform.model.Contest;
+import com.example.contestplatform.model.Score;
 import com.example.contestplatform.service.ContestService;
+import com.example.contestplatform.service.ScoreService;
 
 @RestController
 @RequestMapping("/api/contests")
@@ -25,6 +28,9 @@ public class ContestController {
 
     @Autowired
     private ContestService contestService;
+
+    @Autowired
+    private ScoreService scoreService;
 
     // Create a new contest
     @PostMapping
@@ -71,6 +77,13 @@ public class ContestController {
     public ResponseEntity<Void> deleteContest(@PathVariable Long id) {
         contestService.deleteContest(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{contestId}/ranking")
+    public List<ScoreDTO> getScoresByContest(@PathVariable Long contestId) {
+        Optional<Contest> optionalContest = contestService.getContestById(contestId);
+        Contest contest = optionalContest.get();
+        return scoreService.getRankingsForContest(contest);
     }
 }
 

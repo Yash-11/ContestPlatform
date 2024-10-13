@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.example.contestplatform.model.Problem;
 import com.example.contestplatform.repository.ProblemRepository;
@@ -27,6 +29,11 @@ public class ProblemService {
     public List<Problem> getProblems() {
         return problemRepository.findAll();
     }
+
+    public Page<Problem> getProblemsByPage(Pageable pageable) {
+        return problemRepository.findAll(pageable);
+    }
+
 
     public Problem save(Problem problem) {
         System.out.println("Adding Problem: id "+problem.getId()+" title: "+problem.getTitle());
