@@ -8,17 +8,23 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
+/*
+
+*/
+
 const ProblemList = () => {
   const navigate = useNavigate();
   const [problems, setProblems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const query = useQuery();
   const page = (parseInt(query.get("page")) || 1);
+  const search = query.get("search");
   console.log(page);
 
 
   const size = 10;
 
-  const fetchProblems = async (page, size) => {
+  const fetchProblems = async (page, size, searchTerm) => {
     const pageid = page - 1;
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/api/problems`,
@@ -26,15 +32,11 @@ const ProblemList = () => {
           headers: {
             "Authorization": 'Bearer ' + localStorage.getItem('token')
           },
-          params: { page: pageid, size: size }
+          params: { page: pageid, size: size, search: searchTerm }
         })
       .then(response => {
-        // const totalPages = response.data.
         console.log(response.data);
         const totalPages = response.data.totalPages;
-        // if (page>totalPages) {
-        //   navigate(`?page=${totalPages}`);
-        // }
 
         setProblems(response.data.content);
       })
@@ -44,19 +46,41 @@ const ProblemList = () => {
       });
   };
 
+  const handleSearch = async () => {
+    navigate(`?page=1&search=${searchTerm}`);
+    // try {
+    //   const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/problems/search`, {
+    //     headers: {
+    //       "Authorization": 'Bearer ' + localStorage.getItem('token')
+    //     },
+    //     params: { title: searchTerm, page: page, size: 10 },
+    //   });
+    //   console.log(response.data);
+    //   setProblems(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching search results:', error);
+    // }
+  };
+
 
   useEffect(() => {
-    fetchProblems(page, size);
-  }, [page]);
+    fetchProblems(page, size, searchTerm);
+  }, [page, search]);
 
   const handlePreviousPage = () => {
     const previousPage = page - 1;
-    navigate(`?page=${previousPage}`);
+    if (search)
+      navigate(`?page=${previousPage}&search=${search}`);
+    else
+      navigate(`?page=${previousPage}`);
   }
 
   const handleNextPage = () => {
     const nextPage = page + 1;
-    navigate(`?page=${nextPage}`);
+    if (search)
+      navigate(`?page=${nextPage}&search=${search}`);
+    else
+      navigate(`?page=${nextPage}`);
   };
 
   return (
@@ -65,8 +89,21 @@ const ProblemList = () => {
       <Navbar handleLogout={null} />
 
       <div className="container mt-3">
-        <h1 className="text-center mb-3 h2heading">Problems</h1>
-        <hr className="custom-hr mt-3 mb-4"></hr>
+        <div className='d-flex align-items-center mb-3 mx-4'>
+
+          <div className="problem-heading">Problems</div>
+          <div className='ml-auto'>
+            <input
+              type="text"
+              placeholder="Search by title"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button className='search-icon' onClick={handleSearch}><i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+        </div>
+
+        <hr className="custom-hr mt-6 mb-4"></hr>
         <div>
           <ul>
             <div className="heading-elem">

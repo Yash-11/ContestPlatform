@@ -68,8 +68,9 @@ color:blue;
   border-color: #0056b3;
 }
 
-.h2heading {
+.problem-heading {
   color: rgb(78, 138, 78);
+  font-size: xx-large;
 }
 
 .profile_pic {}
@@ -82,4 +83,8 @@ color:blue;
   width: 80%;
   /* margin: 50px 0; Space above and below the line */
   margin: auto;
+}
+
+.search-icon{
+  border-width: 2px;
 }

@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.example.contestplatform.model.Problem;
@@ -49,6 +50,12 @@ public class ProblemService {
 
     public Optional<Problem> findOneByTitleIgnoreCase(String title) {        
         return problemRepository.findOneByTitleIgnoreCase(title);
+    }
+
+    public Page<Problem> searchProblemsByTitle(String title, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return problemRepository.searchByTitle(title, pageable);
     }
 
     // public Optional<Problem> getProblemById(Long id) {

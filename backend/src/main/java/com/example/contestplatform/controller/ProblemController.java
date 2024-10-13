@@ -43,9 +43,15 @@ public class ProblemController {
     @GetMapping
     public ResponseEntity<Page<Problem>> getProblems(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Problem> problems = problemService.getProblemsByPage(pageable);
+        Page<Problem> problems;
+        if (search.equals("")) {
+            problems = problemService.getProblemsByPage(pageable);
+        } else {
+            problems = problemService.searchProblemsByTitle(search, page, size);
+        }
         return ResponseEntity.ok(problems);
     }
 
@@ -60,6 +66,14 @@ public class ProblemController {
 
         return ResponseEntity.ok(problem.get());
     }
+
+    // @GetMapping("/search")
+    // public Page<Problem> searchProblems(
+    //         @RequestParam String title,
+    //         @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "10") int size) {
+    //     return problemService.searchProblemsByTitle(title, page, size);
+    // }
 }
 
 
