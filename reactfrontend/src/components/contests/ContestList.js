@@ -60,8 +60,8 @@ const ContestList = () => {
 
         <div>
           <ul>
-            {currentContests.map(contest => (
-              <div className="contest-elem shadow-sm">
+            {currentContests.map((contest) => (
+              <div key={contest.id} className="contest-elem shadow-sm">
                 <div className='d-flex align-items-center'>
 
                   <div style={{ flexBasis: '15%' }}>
@@ -77,9 +77,11 @@ const ContestList = () => {
                     <div>{contest.startTime}</div>
                   </div>
                   <div >
-                    <div className='enter-btn'>
-                      <Link className="" to={`/contest/${contest.id}`}>Enter</Link>
-                    </div>
+                    <a className='contest-link' href={`/contest/${contest.id}`}>
+                      <div className='enter-btn'>
+                        Enter
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -110,9 +112,11 @@ const ContestList = () => {
                   </div>
 
                   <div >
-                    <div className='enter-btn'>
-                      <Link className="" to={`/contest/${contest.id}`}>Enter</Link>
-                    </div>
+                    <a className='contest-link' href={`/contest/${contest.id}`}>
+                      <div className='enter-btn'>
+                        Enter
+                      </div>
+                    </a>
                   </div>
                 </div>
               </div>

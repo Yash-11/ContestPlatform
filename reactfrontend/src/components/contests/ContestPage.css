@@ -1,12 +1,32 @@
 .title {
-color: rgba(0, 0, 0, 0.826);
-font-size: xx-large;
+  color: rgba(0, 0, 0, 0.826);
+  font-size: xx-large;
 }
 
-  .problem-elem {
-    padding: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    /* border:1px solid; */
-    border: none;
+.problem-elem {
+  padding: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  /* border:1px solid; */
+  border: none;
+}
+
+.ranking {
+  color: blue;
+  font-size: x-large;
+}
+
+.ranking:hover{
+  color: rgb(54, 37, 1);
+  text-decoration: none;
+}
+
+.problem-elem-title {
+  color:blue;
   }
+  
+  .problem-elem-title:hover{
+    color:black;
+      text-decoration: none;
+  }
+  

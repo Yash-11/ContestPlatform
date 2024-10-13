@@ -1,78 +1,90 @@
 /* src/DoctorList.css */
 body {
-    font-family: Arial, sans-serif;
-  }
+  font-family: Arial, sans-serif;
+}
 
 .contest-elem {
   padding: .7rem;
   border-radius: .7rem;
   background-color: #e6eaee;
 }
+
 .contest-img {
   border-radius: .3rem;
 }
 
-.enter-btn{
+.contest-link:hover{
+  text-decoration: none;
+}
+
+.enter-btn {
   width: 100%;
   border-radius: .3rem;
-  background-color: #6d767642;
-  color: rgb(41, 151, 114);
+  background-color: rgb(206, 210, 211);
+  color: rgb(0, 140, 255);
   padding: 0.3rem;
   font-size: medium;
 }
-  
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+
+.contest-link:hover .enter-btn {
+  background-color: #bcc5c6; /* New background color on hover */
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
   background-color: #fff;
   /* margin: 20px; */
   overflow: hidden;
   display: flex;
-  align-items: center; /* Centers items vertically */
-  }
-  .card-image {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .card-body {
-    /* Padding inside the card body to space the content well */
-    /* padding: 15px; */
-  }
-  .card-title {
-    color: #007bff;
-  }
+  align-items: center;
+  /* Centers items vertically */
+}
 
-  .card-content {
-    display: flex;
-    width: 100%;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-  }
-  
-  .contest-heading {
-    color: rgb(78, 138, 78);
-    font-size: x-large;
-  }
+.card-image {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .profile_pic {
+.card-body {
+  /* Padding inside the card body to space the content well */
+  /* padding: 15px; */
+}
 
-  }
+.card-title {
+  color: #007bff;
+}
 
-  .custom-hr {
-    border: 0;
-    height: 1px;
-    background: #adacac; /* Color of the line */
-    width: 90%;
-    /* margin: 50px 0; Space above and below the line */
-    margin: auto;
-  }
+.card-content {
+  display: flex;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.contest-heading {
+  color: rgb(78, 138, 78);
+  font-size: x-large;
+}
+
+.profile_pic {}
+
+.custom-hr {
+  border: 0;
+  height: 1px;
+  background: #adacac;
+  /* Color of the line */
+  width: 90%;
+  /* margin: 50px 0; Space above and below the line */
+  margin: auto;
+}

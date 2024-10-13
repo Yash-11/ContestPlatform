@@ -1,0 +1,21 @@
+.item-heading {
+    color: grey;
+}
+
+.rankings-item {
+    color: black;
+    text-transform: capitalize;
+}
+
+.ranking-elem {
+    padding: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    /* border:1px solid; */
+    border: none;
+}
+
+
+.ranking-heading {
+    font-size: xx-large;
+}

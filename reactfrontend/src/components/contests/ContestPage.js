@@ -31,11 +31,12 @@ function ContestPage() {
         <div>
             <Navbar handleLogout={handleLogout} />
             <div className="page-continer">
-                <div className='title mb-3'>{contest.name}</div>
-                {/* <h1 className="mt-2">{contest.name}</h1> */}
+                <div className='d-flex align-items-center mb-3 mr-5'>
+                  <div className='title'>{contest.name}</div>
+
+                  <a className='ranking ml-auto' href={`/contest/${contestId}/rankings`}>Rankings</a>
+                </div>
                 <hr className="custom-hr mt-3 mb-4"></hr>
-                {/* <p>{contest.description}</p>
-                <hr className="custom-hr mt-3 mb-4"></hr> */}
             <div>
                 <ul>
                     {problems.map(problem => (
@@ -43,7 +44,7 @@ function ContestPage() {
                         <div className="problem-elem shadow-sm" style={{ backgroundColor: problem.id % 2 === 0 ? '#f0f0f0' : '#ffffff' }}>
                           <div className=" d-flex  align-items-center">
                             <div style={{ flexBasis: '10%' }} className=""><h5 className="">{problem.id}.</h5></div>
-                            <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a href={`/contest/${contestId}/problem/${problem.id}`} className="">
+                            <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a href={`/contest/${contestId}/problem/${problem.id}`} className="problem-elem-title">
                               {problem.title}
                             </a></h5></div>
                             <div style={{ flexBasis: '30%' }} className=""><h5 className="">Easy</h5></div>

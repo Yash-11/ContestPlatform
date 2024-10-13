@@ -1,4 +1,4 @@
-.logout-btn{
+.logout-btn {
     width: 100%;
     padding: 0.3rem;
     border-radius: .3rem;
@@ -6,4 +6,14 @@
     background-color: #6d767642;
     font-size: medium;
     border: none;
+}
+
+.nv-link {
+    font-size: larger;
+    color: #262626bf;
+}
+
+.nv-link:hover {
+    text-decoration: none;
+    color: black;
 }

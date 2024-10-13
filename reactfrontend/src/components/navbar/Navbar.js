@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import useLogout from '../hooks/useLogout';
 import './Navbar.css';
 
-const Navbar = ({ handleLogout }) => {
+const Navbar = ({ handleLogout_ }) => {
   var user;
   if (localStorage.getItem('token')) user = 1;
   else user = null;
+  const handleLogout = useLogout();
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light container-fluid">
       <Link className="navbar-brand" to="/">
@@ -16,13 +18,18 @@ const Navbar = ({ handleLogout }) => {
         />
       </Link>
 
-      <Link className="navbar-brand" to="/problems">
-        Problems
-      </Link>
+      <a className='nv-link mx-2' href={'/problems'}>
+        <div className=''>
+          Problems
+        </div>
+      </a>
 
-      <Link className="navbar-brand" to="/contests">
-        Contest
-      </Link>
+
+      <a className='nv-link mx-2' href={'/contests'}>
+        <div className=''>
+          Contest
+        </div>
+      </a>
 
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav ml-auto">
