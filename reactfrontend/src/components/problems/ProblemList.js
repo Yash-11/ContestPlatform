@@ -29,9 +29,6 @@ const ProblemList = () => {
     axios
       .get(`${process.env.REACT_APP_API_BASE_URL}/api/problems`,
         {
-          headers: {
-            "Authorization": 'Bearer ' + localStorage.getItem('token')
-          },
           params: { page: pageid, size: size, search: searchTerm }
         })
       .then(response => {
@@ -99,7 +96,7 @@ const ProblemList = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className='search-icon' onClick={handleSearch}><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button className='search-icon' onClick={handleSearch}><i className="fa-solid fa-magnifying-glass"></i></button>
           </div>
         </div>
 

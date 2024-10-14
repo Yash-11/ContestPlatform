@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProblemPage.css';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import useLogout from '../hooks/useLogout';
@@ -14,21 +14,17 @@ const headers = {
 };
 
 function ProblemPage() {
+  const navigate = useNavigate();
   const { problemId } = useParams();
   const [value, setValue] = React.useState("class Main {\n    public static void main(String[] args) {\n      System.out.println(\"Hello World\");\n  }\n}");
   const [problem, setProblem] = useState({});
-  const [runStatus, setRunStatus] = useState(''); // State to track run status
-  const [output, setOutput] = useState(''); // State to track output
+  const [runStatus, setRunStatus] = useState('');
+  const [output, setOutput] = useState('');
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/problems/${problemId}`,
-      {
-        headers: {
-          "Authorization": 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-        setProblem(response.data);
-      });
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/problems/${problemId}`).then(response => {
+      setProblem(response.data);
+    });
   }, [problemId]);
 
   const onChange = React.useCallback((val, viewUpdate) => {
@@ -65,26 +61,22 @@ function ProblemPage() {
             clearInterval(interval); // Stop polling once we get the result
           }
         } catch (error) {
+          navigate('/login');
           console.error('Error checking submission result:', error);
           clearInterval(interval);
         }
-      }, 5000);  // Poll every 3 seconds
+      }, 5000);
 
-
-
-      // Handle response from the backend
       console.log('Response:', response.data);
     } catch (error) {
+      navigate('/login');
       console.error('Error submitting code:', error);
     }
   };
 
-  const handleLogout = useLogout();
-
-
   return (
     <div>
-      <Navbar handleLogout={handleLogout} />
+      <Navbar handleLogout={null} />
 
       <div className="page-continer">
         <div className='title mb-3'>{problem.id}. {problem.title}</div>
@@ -129,13 +121,13 @@ function ProblemPage() {
 
         {/* Show Output */}
         <div className='mt-2 mb-3'>
-            <div className='input-heading'>Output</div>
-            <div className="input-box">
-              <div className='mx-3'>
-                {output}
-              </div>
+          <div className='input-heading'>Output</div>
+          <div className="input-box">
+            <div className='mx-3'>
+              {output}
             </div>
           </div>
+        </div>
         {/* {output && (
           
         )} */}

@@ -62,6 +62,7 @@ public class WebSecurityConfig  {
         "/",
         "/login",
         // "/api/**",
+        "api/problems/**",
         "/authenticate/**",
         "/register_contestant/**",
         "/db-console/**",
