@@ -8,76 +8,57 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-/*
-
-*/
-
 const ProblemList = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [problems, setProblems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const query = useQuery();
   const page = (parseInt(query.get("page")) || 1);
-  const search = query.get("search");
-  console.log(page);
+  console.log(query.entries());
 
+  const allParams = {};
+  for (let [key, value] of query.entries()) {
+    allParams[key] = value;
+  }
 
-  const size = 10;
-
-  const fetchProblems = async (page, size, searchTerm) => {
-    const pageid = page - 1;
-    axios
-      .get(`${process.env.REACT_APP_API_BASE_URL}/api/problems`,
+  const fetchProblems = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/problems`,
         {
-          params: { page: pageid, size: size, search: searchTerm }
-        })
-      .then(response => {
-        console.log(response.data);
-        const totalPages = response.data.totalPages;
+          params: allParams
+        });
+      console.log(response);
+      // const totalPages = response.data.totalPages;
 
-        setProblems(response.data.content);
-      })
-      .catch(error => {
-        navigate('/login');
-        console.error('Error fetching doctors:', error);
-      });
+      setProblems(response.data.content);
+    } catch (error) {
+      console.error('Error fetching doctors:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = async () => {
-    navigate(`?page=1&search=${searchTerm}`);
-    // try {
-    //   const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/problems/search`, {
-    //     headers: {
-    //       "Authorization": 'Bearer ' + localStorage.getItem('token')
-    //     },
-    //     params: { title: searchTerm, page: page, size: 10 },
-    //   });
-    //   console.log(response.data);
-    //   setProblems(response.data);
-    // } catch (error) {
-    //   console.error('Error fetching search results:', error);
-    // }
+    query.set('search', searchTerm);
+    query.set('page', 1);
+    if (searchTerm === "") query.delete('search');
+    navigate(`?${query.toString()}`);
   };
 
 
   useEffect(() => {
-    fetchProblems(page, size, searchTerm);
-  }, [page, search]);
+    fetchProblems();
+  }, [useLocation().search]);
 
   const handlePreviousPage = () => {
-    const previousPage = page - 1;
-    if (search)
-      navigate(`?page=${previousPage}&search=${search}`);
-    else
-      navigate(`?page=${previousPage}`);
+    query.set('page', page - 1);
+    navigate(`?${query.toString()}`);
   }
 
   const handleNextPage = () => {
-    const nextPage = page + 1;
-    if (search)
-      navigate(`?page=${nextPage}&search=${search}`);
-    else
-      navigate(`?page=${nextPage}`);
+    query.set('page', page + 1);
+    navigate(`?${query.toString()}`);
   };
 
   return (
@@ -110,25 +91,38 @@ const ProblemList = () => {
                 <div style={{ flexBasis: '30%' }} className=""><h5 className="">Difficulty</h5></div>
               </div>
             </div>
-            {problems.map(problem => (
-              <div key={problem.id}>
-                <div className="problem-elem shadow-sm" style={{ backgroundColor: problem.id % 2 === 0 ? '#f0f0f0' : '#ffffff' }}>
-                  <div className=" d-flex  align-items-center">
-                    <div style={{ flexBasis: '10%' }} className=""><h5 className="">{problem.id}.</h5></div>
-                    <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a className='problem-elem-title' href={`/problem/${problem.id}`}>
-                      {problem.title}
-                    </a></h5></div>
-                    <div style={{ flexBasis: '30%' }} className=""><h5 className="">Easy</h5></div>
-                  </div>
-                </div>
+            </ul>
+        </div>
+
+        <div>
+        <ul>
+            {loading ? (
+              <div className='d-flex justify-content-center'>
+                <div className="loader"></div>
               </div>
-            ))}
+            ) : (
+              <div>
+                {problems.map((problem, id) => (
+                  <div key={problem.id}>
+                    <div className="problem-elem shadow-sm" style={{ backgroundColor: id % 2 === 0 ? '#f0f0f0' : '#ffffff' }}>
+                      <div className=" d-flex  align-items-center">
+                        <div style={{ flexBasis: '10%' }} className=""><h5 className="">{problem.id}.</h5></div>
+                        <div style={{ flexBasis: '60%' }} className=""><h5 className=""><a className='problem-elem-title' href={`/problem/${problem.id}`}>
+                          {problem.title}
+                        </a></h5></div>
+                        <div style={{ flexBasis: '30%' }} className=""><h5 className="">Easy</h5></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </ul>
         </div>
 
         <div className='d-flex  justify-content-center my-4' >
           <div >
-            <button onClick={handlePreviousPage} disabled={page === 0}>
+            <button onClick={handlePreviousPage} disabled={page === 1}>
               <i className="fa-solid fa-angle-left"></i>
             </button>
             <button onClick={handleNextPage}>

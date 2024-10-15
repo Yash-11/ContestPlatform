@@ -42,9 +42,10 @@ public class ProblemController {
      */
     @GetMapping
     public ResponseEntity<Page<Problem>> getProblems(
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "") String search) {
+        page--;
         Pageable pageable = PageRequest.of(page, size);
         Page<Problem> problems;
         if (search.equals("")) {
