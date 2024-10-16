@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import './ProblemList.css';
 import Navbar from '../navbar/Navbar';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-
 const ProblemList = () => {
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [problems, setProblems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const query = useQuery();
-  const page = (parseInt(query.get("page")) || 1);
-  console.log(query.entries());
+  const page = (parseInt(searchParams.get("page")) || 1);
+  console.log(searchParams.entries());
 
   const allParams = {};
-  for (let [key, value] of query.entries()) {
+  for (let [key, value] of searchParams.entries()) {
     allParams[key] = value;
   }
 
@@ -40,25 +35,26 @@ const ProblemList = () => {
   };
 
   const handleSearch = async () => {
-    query.set('search', searchTerm);
-    query.set('page', 1);
-    if (searchTerm === "") query.delete('search');
-    navigate(`?${query.toString()}`);
+    const params = new URLSearchParams(searchParams);
+    params.set('search', searchTerm);
+    params.set('page', 1);
+    if (searchTerm === "") params.delete('search');
+    setSearchParams(params);
   };
 
 
   useEffect(() => {
     fetchProblems();
-  }, [useLocation().search]);
+  }, [searchParams]);
 
   const handlePreviousPage = () => {
-    query.set('page', page - 1);
-    navigate(`?${query.toString()}`);
+    searchParams.set('page', page - 1);
+    setSearchParams(searchParams);
   }
 
   const handleNextPage = () => {
-    query.set('page', page + 1);
-    navigate(`?${query.toString()}`);
+    searchParams.set('page', page + 1);
+    setSearchParams(searchParams);
   };
 
   return (
@@ -91,11 +87,11 @@ const ProblemList = () => {
                 <div style={{ flexBasis: '30%' }} className=""><h5 className="">Difficulty</h5></div>
               </div>
             </div>
-            </ul>
+          </ul>
         </div>
 
         <div>
-        <ul>
+          <ul>
             {loading ? (
               <div className='d-flex justify-content-center'>
                 <div className="loader"></div>
