@@ -1,5 +1,6 @@
 package com.example.contestplatform.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.contestplatform.dto.SubmissionDTO;
@@ -25,8 +27,6 @@ import org.springframework.security.core.Authentication;
 @RequestMapping("api/submissions")
 public class SubmissionController {
 
-    @Autowired
-    private SubmissionProducer submissionProducer;
     @Autowired
     private SubmissionService submissionService;
     @Autowired
@@ -60,5 +60,13 @@ public class SubmissionController {
         submissionDTO.setCodeOutput(submission.getCodeOutput());
         submissionDTO.setStatus(submission.getStatus());
         return ResponseEntity.ok(submissionDTO);
+    }
+
+    @GetMapping
+    public List<Submission> getSubmissions(@RequestParam Long problemId, Authentication authentication) {
+
+        String username = authentication.getName();
+        Long userId = contestantService.findOneByUsernameIgnoreCase(username).get().getId();
+        return submissionService.getSubmissionsByUserIdAndProblemId(userId, problemId);
     }
 }

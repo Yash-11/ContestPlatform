@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ProblemPage.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import useLogout from '../hooks/useLogout';
@@ -79,11 +79,15 @@ function ProblemPage() {
       <Navbar handleLogout={null} />
 
       <div className="page-continer">
+        <div className='d-flex align-items-center'>
         <div className='title mb-3'>{problem.id}. {problem.title}</div>
-        {/* <div className='desc'>Description</div> */}
+        <Link className='ml-auto' to={`/problem/${problemId}/submissions`}> 
+        <button type="button" className="submission-btn" onClick={()=> navigate('/submissions')}>Submissions</button>
+        </Link>
+        </div>
+
 
         <p>{problem.description}</p>
-        {/* <hr className="custom-hr mt-3 mb-4"></hr> */}
 
         <div className='editor'>
 

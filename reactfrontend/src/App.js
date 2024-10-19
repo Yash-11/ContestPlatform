@@ -10,6 +10,7 @@ import ContestList from './components/contests/ContestList';
 import ContestPage from './components/contests/ContestPage';
 import ContestProblem from './components/problems/ContestProblem';
 import Rankings from './components/ranking/Rankings';
+import SubmissionList from './components/submissions/SubmissionList';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
     <Route path="/problems" element={<ProblemList />} />
     <Route path="/contests" element={<ContestList />} />
     <Route path="/problem/:problemId" element={<ProblemPage />} />
+    <Route path="/problem/:problemId/submissions" element={<SubmissionList />} />
     <Route path="/contest/:contestId" element={<ContestPage />} />
     <Route path="/contest/:contestId/problem/:problemId" element={<ContestProblem />} />
     <Route path="/contest/:contestId/rankings" element={<Rankings />} />

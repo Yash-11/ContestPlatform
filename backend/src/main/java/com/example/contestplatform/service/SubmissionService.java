@@ -1,5 +1,6 @@
 package com.example.contestplatform.service;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +24,10 @@ public class SubmissionService {
     public Submission getReferenceById(Long id) {
         return submissionRepository.getReferenceById(id);
     }
+
+    public List<Submission> getSubmissionsByUserIdAndProblemId(Long userId, Long problemId) {
+        return submissionRepository.findByUserIdAndProblemId(userId, problemId);
+    }
+
     
 }

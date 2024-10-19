@@ -33,12 +33,30 @@
   font-size: x-large;
 }
 
+.submission-btn {
+  width: 100%;
+  padding: 0.3rem;
+  border-radius: .5rem;
+  color: #888;
+  background-color: #aab5b542;
+  font-size:medium;
+  border: none;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+
+.submission-btn:hover {
+  background-color:#767f7f42;
+  color: #888;
+  transition: 0.4s;
+}
+
 .submit-btn{
   width: 80%;
   padding: 0.5rem;
   border-radius: .5rem;
   color: #2fbb21;
-  background-color: #6d767642;
+  background-color: #aab5b542;
   font-size: large;
   border: none;
   cursor: pointer;
@@ -46,13 +64,13 @@
 }
 
 .submit-btn:hover {
-  background-color:#8d9098;
-  color: #55ea48;
+  background-color:#767f7f42;
+  color: #2fbb21;
   transition: 0.4s;
 }
 
 .editor{
-  background-color: #71737608;
+  background-color: #000a2008;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: .5rem;
 }

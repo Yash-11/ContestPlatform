@@ -1,0 +1,72 @@
+.editor{
+  background-color: #000a2008;
+  padding: 1rem;
+  border-radius: .5rem;
+}
+
+.Submissions-title {
+  font-size: xx-large;
+  color: #6c757d;
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap; 
+}
+
+.submission-section, .code-section {
+  flex-basis: 48%; /* Each section takes up 48% of the container's width */
+  padding: 1rem;
+  /* border: 1px solid #ccc; */
+  border-radius: .5rem;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .submission-section, .code-section {
+      flex-basis: 100%; 
+  }
+}
+
+.submission-elem-title {
+  color: #adacac;
+  font-size: large;
+}
+
+.submission-elem {
+  padding: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  /* border:1px solid; */
+  border: none;
+  font-size: small;
+}
+
+.submission-elm-btn {
+  cursor: pointer;
+}
+
+.no-submissions{
+  color: dimgrey;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-4 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.px-3 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
