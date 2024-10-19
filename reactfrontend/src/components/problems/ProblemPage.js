@@ -80,10 +80,11 @@ function ProblemPage() {
 
       <div className="page-continer">
         <div className='d-flex align-items-center'>
-        <div className='title mb-3'>{problem.id}. {problem.title}</div>
-        <Link className='ml-auto' to={`/problem/${problemId}/submissions`}> 
-        <button type="button" className="submission-btn" onClick={()=> navigate('/submissions')}>Submissions</button>
-        </Link>
+          <div className='title mb-3'>{problem.id}. {problem.title}</div>
+          <Link className='ml-auto submission-link' to={`/problem/${problemId}/submissions`}>
+
+            <div className='submission-btn'>Submissions</div>
+          </Link>
         </div>
 
 

@@ -1,4 +1,4 @@
-.editor{
+.editor {
   background-color: #000a2008;
   padding: 1rem;
   border-radius: .5rem;
@@ -13,20 +13,27 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  flex-wrap: wrap; 
+  /* flex-wrap: wrap;  */
 }
 
-.submission-section, .code-section {
-  flex-basis: 48%; /* Each section takes up 48% of the container's width */
+.submission-section,
+.code-section {
+  /* flex-basis: 48%;  */
+  width: 100%;
   padding: 1rem;
+  min-width: 350px;
   /* border: 1px solid #ccc; */
   border-radius: .5rem;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
-  .submission-section, .code-section {
-      flex-basis: 100%; 
+
+  /* .submission-section, .code-section {
+    } */
+  .content-wrapper {
+    flex-direction: column;
+
   }
 }
 
@@ -48,7 +55,7 @@
   cursor: pointer;
 }
 
-.no-submissions{
+.no-submissions {
   color: dimgrey;
 }
 
